@@ -30,7 +30,6 @@
 def porzadkuj_do_lewej(input_data):
 
     num_columns = len(input_data[0])
-
     column_widths = [max(len(str(row[i])) for row in input_data) for i in range(num_columns)]
 
     formatted_rows = []
