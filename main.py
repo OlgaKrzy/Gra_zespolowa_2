@@ -83,6 +83,7 @@ assert porzadkuj_do_lewej([[4, 550, 600, 7000], [9999, 1, 50, 11], [750, 11, 99,
 
 
 
+
 import math
 def wierzcholek_trojkata(wierzch):
     x1, y1 = wierzch[0]
@@ -91,22 +92,35 @@ def wierzcholek_trojkata(wierzch):
     # długość boku trójkąta równobocznego
     dlugosc_boku = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
-    # położenie brakującego wierzchołka
+    # środek boku
     srodek_x = (x1 + x2) / 2
     srodek_y = (y1 + y2) / 2
 
     # odległość od środka boku do brakującego wierzchołka
-    odl_do_wierzch = math.sqrt(3) / 2 * dlugosc_boku
+    odl_do_wierzch = (math.sqrt(3) / 2) * dlugosc_boku
 
-    # współrzędne brakującego wierzchołka
-    wierzch_x1 = round(srodek_x - odl_do_wierzch, 2)
-    wierzch_y1 = round(srodek_y + odl_do_wierzch, 2)
+    # wektor boku
+    wektor_x = x2 - x1
+    wektor_y = y2 - y1
 
-    wierzch_x2 = round(srodek_x + odl_do_wierzch, 2)
-    wierzch_y2 = round(srodek_y - odl_do_wierzch, 2)
+    # znormalizowany wektor boku
+    wektor_x_norm = wektor_x / dlugosc_boku
+    wektor_y_norm = wektor_y / dlugosc_boku
+
+    # znormalizowany wektor prostopadły do boku
+    wektor_x_norm_prost = -wektor_y_norm
+    wektor_y_norm_prost = wektor_x_norm
+
+
+    # przesunięcie środka boku o wektor
+    wierzch_x1 = round(srodek_x + wektor_x_norm_prost * odl_do_wierzch, 2)
+    wierzch_y1 = round(srodek_y - wektor_y_norm_prost * odl_do_wierzch, 2)
+
+    wierzch_x2 = round(srodek_x - wektor_x_norm_prost * odl_do_wierzch, 2)
+    wierzch_y2 = round(srodek_y + wektor_y_norm_prost * odl_do_wierzch, 2)
 
     return [[wierzch_x1, wierzch_y1], [wierzch_x2, wierzch_y2]]
 
-wierzch_input = [[5, 1], [3, 6]]
+wierzch_input = [[2, 1], [5, 1]]
 wierzch_output = wierzcholek_trojkata(wierzch_input)
 print(wierzch_output)
