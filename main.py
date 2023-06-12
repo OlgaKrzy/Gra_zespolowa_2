@@ -48,6 +48,8 @@ assert porzadkuj_do_lewej([[4, 550, 600, 7000], [9999, 1, 50, 11], [750, 11, 99,
  [9999, 1  , 50 , 11  ],
  [750 , 11 , 99 , 68  ]]"""
 
+# sprawdzanie wierzchołków trójkąt
+
 import math
 def wierzcholek_trojkata(wierzch):
     x1, y1 = wierzch[0]
@@ -83,11 +85,13 @@ def wierzcholek_trojkata(wierzch):
     wierzch_x2 = round(srodek_x - wektor_x_norm_prost * odl_do_wierzch, 2)
     wierzch_y2 = round(srodek_y + wektor_y_norm_prost * odl_do_wierzch, 2)
 
-    return [[wierzch_x1, wierzch_y1], [wierzch_x2, wierzch_y2]]
+    return [(wierzch_x1, wierzch_y1), (wierzch_x2, wierzch_y2)]
 
 wierzch_input = [[2, 1], [5, 1]]
 wierzch_output = wierzcholek_trojkata(wierzch_input)
 print(wierzch_output)
+
+#sprawdzanie wierzchołków kwadrat
 
 def znajdz_brakujacy_wierzcholek(wierzcholki):
     t_wierzcholki = [tuple(wierzch) for wierzch in wierzcholki]
@@ -124,7 +128,9 @@ wierzcholki = [[1,1], [2,3], [4,2]]
 brakujacy_wierzch = znajdz_brakujacy_wierzcholek(wierzcholki)
 print(brakujacy_wierzch)
 
-assert wierzcholek_y([[1,2], [2,4], [4,3]]) == [3,1]
-assert wierzcholek_y([[5, 2], [5, 6], [9, 2]]) == [9, 6]
-assert wierzcholek_trojkata([[2, 1], [5, 1]]) == [3.5, 3.6]
-assert wierzcholek_trojkata([[6, 1], [10, 1]]) == [8, 4.46]
+#testy
+
+assert znajdz_brakujacy_wierzcholek([[1, 2], [2, 4], [4, 3]]) == (3, 1)
+assert znajdz_brakujacy_wierzcholek([[5, 2], [5, 6], [9, 2]]) == (9, 6)
+assert set(wierzcholek_trojkata([[2, 1], [5, 1]])) == {(3.5, 3.6), (3.5, -1.6)}
+assert set(wierzcholek_trojkata([[6, 1], [10, 1]])) == {(8.0, 4.46), (8.0, -2.46)}
