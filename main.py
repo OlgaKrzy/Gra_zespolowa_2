@@ -48,38 +48,37 @@ assert porzadkuj_do_lewej([[4, 550, 600, 7000], [9999, 1, 50, 11], [750, 11, 99,
  [9999, 1  , 50 , 11  ],
  [750 , 11 , 99 , 68  ]]"""
 
-
 def znajdz_brakujacy_wierzcholek(wierzcholki):
-    # Stworzenie listy wartości x i y dla każdego wierzchołka
-    x_values = [wierzch[0] for wierzch in wierzcholki]
-    y_values = [wierzch[1] for wierzch in wierzcholki]
+    t_wierzcholki = [tuple(wierzch) for wierzch in wierzcholki]
+    #Znalezienie wierzchołka trójkąta przy którym kąt wynosi 90 stopni
+    symetryczny = None
+    for i in range(3):
+        wierzch1 = t_wierzcholki[i]
+        wierzch2 = t_wierzcholki[(i + 1) % 3]
+        wierzch3 = t_wierzcholki[(i + 2) % 3]
 
-    # Znalezienie minimalnej i maksymalnej wartości x i y
-    min_x = min(x_values)
-    max_x = max(x_values)
-    min_y = min(y_values)
-    max_y = max(y_values)
+        #Obliczenie długości boków trójkąta
+        bok1 = ((wierzch2[0] - wierzch1[0])**2 + (wierzch2[1] - wierzch1[1])**2)**0.5
+        bok2 = ((wierzch3[0] - wierzch2[0])**2 + (wierzch3[1] - wierzch2[1])**2)**0.5
+        bok3 = ((wierzch1[0] - wierzch3[0])**2 + (wierzch1[1] - wierzch3[1])**2)**0.5
+        #Sprawdzenie czy kąt wynosi 90 stopni
+        if round(bok1**2 + bok2**2, 2) == round(bok3**2, 2):
+            #Zwrócenie brakującego wierzchołka
+            symetryczny = wierzch2
 
-    brakujacy_x = None
-    brakujacy_y = None
+    #znalezienie punktu środkowego przekątnej
+    wierzcholki_przekatnej = set(t_wierzcholki) - set([symetryczny])
+    wierzch1 = list(wierzcholki_przekatnej)[0]
+    wierzch2 = list(wierzcholki_przekatnej)[1]
+    srodek = ((wierzch1[0] + wierzch2[0]) / 2, (wierzch1[1] + wierzch2[1]) / 2)
 
-    # Sprawdzenie minimalnej i maksymalnej wartości x
-    for x in range(min_x, max_x + 1):
-        if x not in x_values:
-            brakujacy_x = x
-            break
+    #wektor od symetrycznego do środka
+    wektor = (srodek[0] - symetryczny[0], srodek[1] - symetryczny[1])
+    #brakujacy wierzcholek
+    brakujacy = (symetryczny[0] + wektor[0] * 2, symetryczny[1] + wektor[1] * 2)
 
-     # Sprawdzenie minimalnej i maksymalnej wartości y
-    for y in range(min_y, max_y + 1):
-        if y not in y_values:
-            brakujacy_y = y
-            break
-
-    # Zwrócenie brakującego wierzchołka
-    return [brakujacy_x, brakujacy_y]
-
+    return brakujacy
 # Przykładowe wejście
-wierzcholki = [[0, 1], [0, 4], [3, 1]]
-
+wierzcholki = [[1,1], [2,3], [4,2]]
 brakujacy_wierzch = znajdz_brakujacy_wierzcholek(wierzcholki)
-print(brakujacy_wierzch) 
+print(brakujacy_wierzch)
